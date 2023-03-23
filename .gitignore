@@ -1,0 +1,13 @@
+*.gcno
+*.gcda
+*.o
+*.so
+*.a
+my_nm
+my_objdump
+strace
+a.out
+temp/
+flags.h
+temp*
+coding-style*
