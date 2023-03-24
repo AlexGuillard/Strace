@@ -11,6 +11,6 @@
     #include <string.h>
 
 // Function prototype
-    int option_handling(int ac, char **av);
+    int option_handling(char **av);
 
 #endif /* !STRACE_H_ */
