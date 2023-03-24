@@ -9,7 +9,7 @@
 
 MAIN 		=	main.c
 
-SRC			=
+SRC			=	source/option_handling.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
