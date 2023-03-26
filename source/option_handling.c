@@ -7,7 +7,7 @@
 
 #include "strace.h"
 
-void options_finder(char **av, bool *s, bool *p, int *option_nb)
+static void options_finder(char **av, bool *s, bool *p, int *option_nb)
 {
     for (int a = 0; av[a] != NULL; a++) {
         if (strcmp(av[a], "-s") == 0) {
@@ -23,9 +23,26 @@ void options_finder(char **av, bool *s, bool *p, int *option_nb)
         *option_nb = *option_nb + 1;
 }
 
-int pid_checker(char **av)
+static int kill_pid(char **av, int i)
 {
-    return (0);
+    if (av[i + 1] == NULL || atoi(av[i + 1]) == 0)
+        return (84);
+    if (kill(atoi(av[i + 1]), 0) == 0)
+        return (0);
+    return (84);
+}
+
+static int pid_checker(char **av)
+{
+    int status = 0;
+
+    for (int a = 0; av[a] != NULL; a++) {
+        if (strcmp(av[a], "-p") == 0) {
+            status = kill_pid(av, a);
+            return (status);
+        }
+    }
+    return (status);
 }
 
 int option_handling(int ac, char **av, bool *s, bool *p)
