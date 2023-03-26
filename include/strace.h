@@ -9,8 +9,13 @@
     #define STRACE_H_
     #include <stdio.h>
     #include <string.h>
+    #include <stdbool.h>
+    #include <stdlib.h>
+    #include <signal.h>
+    #include <unistd.h>
 
 // Function prototype
-    int option_handling(char **av);
+    int option_handling(int ac, char **av, bool *s, bool *p);
+    int strace(int ac, char **av);
 
 #endif /* !STRACE_H_ */
