@@ -6,6 +6,7 @@
 */
 
 #include "strace.h"
+#include <stdbool.h>
 
 static void display_help_message(char **av)
 {
@@ -16,9 +17,11 @@ static void display_help_message(char **av)
 
 int main(int ac, char **av)
 {
-    if (ac < 2)
+    if (ac == 1) {
+        printf("%s: No arguments\n", av[0]);
         return (84);
-    if (strcmp(av[1], "--help") == 0) {
+    }
+    if (ac > 1 && strcmp(av[1], "--help") == 0) {
         display_help_message(av);
         return (0);
     }
