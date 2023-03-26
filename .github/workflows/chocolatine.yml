@@ -1,34 +1,151 @@
-name: chocoltine
+name: chocolatine
 
-on: [push]
+on:
+  push:
+    branches-ignores:
+      - 'ga-ignore-*'
+  pull_request:
+    branches-ignores:
+      - 'ga-ignore-*'
 
 env:
-  MIRROR_URL: "git@github.com:EpitechPromo2026/B-PSU-400-NAN-4-1-strace-alexandre.guillard.git"
+  MIRROR_URL: git@github.com:EpitechPromo2026/B-PSU-400-NAN-4-1-strace-alexandre.guillard.git
+  EXECUTABLES: strace
 
 jobs:
-  check_compilation:
+  check_repository_cleanliness:
     runs-on: ubuntu-latest
-    container: epitechcontent/epitest-docker:latest
+    env:
+      UNWANTED_REGEX: ^(?!.*tests\/).*gc(no|da|ov)$|(.*\.(a|o|so))$|(.*~)$|^(#.*#)$|(.*(?i)pain_au_chocolat.*)|^tmp\/.*|.*\/tmp\/.*
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Compile
-      run: |
-        make
-    
-    - name: test run
-      run: |
-        make tests_run
-
-  push_to_mirror:
-    needs: check_compilation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
+
+      - name: useless file checker
+        run: |
+          UNWANTED_FILES=$(find . -type f -printf '%P\n' | { grep -P "${{ env.UNWANTED_REGEX }}" || true; })
+          if [ "$UNWANTED_FILES" != "" ]; then
+              IFS=$'\n'$'\r'
+              for LINE in $UNWANTED_FILES; do
+                  echo "::error file=${LINE},line=1,col=1,title=Unwanted file detected::${LINE}"
+              done
+              echo "FILE_ERROR=true" >> "$GITHUB_ENV"
+          else
+              echo "FILE_ERROR=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: uselss file detected
+        if: env.FILE_ERROR == 'true'
+        run: exit 1
+
+  check_coding_style:
+    needs: check_repository_cleanliness
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/epitech/coding-style-checker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          target_repo_url: ${{ env.MIRROR_URL }}
-          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+          fetch-depth: 0
+
+      - name: run coding style checker
+        run: check.sh $(pwd) $(pwd)
+
+      - name: file_exist
+        run: |
+          if test -f coding-style-reports.log; then
+            echo "Le fichier existe"
+          else
+            echo "Le fichier n'existe pas"
+            exit 1
+          fi
+
+      - name: check coding style error
+        run: |
+          echo "STYLE_ERROR=false" >> $GITHUB_ENV
+          while read -r line
+          do
+            echo "STYLE_ERROR=true" >> $GITHUB_ENV
+            file_name=$(echo "$line" | cut -d ":" -f 1)
+            line_number=$(echo "$line" | cut -d ":" -f 2)
+            type=$(echo "$line" | cut -d ":" -f 3 | cut -c 2-)
+            error_type=$(echo "$line" | cut -d ":" -f 4)
+            echo "::error file=$file_name,line=$line_number,title="$type coding style error" :: $error_type"
+          done < coding-style-reports.log
+
+      - name: error detected
+        if: env.STYLE_ERROR == 'true'
+        run: exit 1
+# VIVE ONE PIECE
+  check_program_compilation:
+    needs: check_coding_style
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Compilation
+        timeout-minutes: 2
+        run: make
+
+      - name: Clean useless file
+        run: make clean
+
+      - name: Verify if file exist and executable
+        run: |
+          echo "BIN_ERROR=false" >> "$GITHUB_ENV"
+          SEARCH_BINARIES="${{ env.EXECUTABLES }}"
+          IFS=$','
+          for BIN in $SEARCH_BINARIES; do
+              if [ ! -f "${BIN}" ]; then
+                  echo "::error file=${BIN},title=Binary not found::${BIN}"
+                  echo "BIN_ERROR=true" >> "$GITHUB_ENV"
+              fi
+              if [ ! -x "${BIN}" ]; then
+                  echo "::error file=${BIN},title=Binary not executable::${BIN}"
+                  echo "BIN_ERROR=true" >> "$GITHUB_ENV"
+              fi
+          done
+
+      - name: Binary error detected
+        if: env.BIN_ERROR == 'true'
+        run: exit 1
+
+  run_tests:
+    needs: check_program_compilation
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: run tests
+        timeout-minutes: 2
+        run: make tests_run
+
+  push_to_mirror:
+    needs: run_tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Push mirroir to original
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            ${{ env.MIRROR_URL }}
+          ssh_private_key:
+            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
