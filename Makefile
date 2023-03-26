@@ -5,59 +5,51 @@
 ## Makefile
 ##
 
-MAIN = main.c
+####### SOURCE #######
 
-SRC =
+MAIN 		=	main.c
 
-SRC_T =
+SRC			=	source/option_handling.c
 
-OBJ = $(MAIN:%.c=%.o) $(SRC:%.c=%.o)
+OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
-OBJ_T = $(SRC_T:%.c=%.o) $(SRC:%.c=%.o)
+OBJ_SRC 	=	$(SRC:%.c=%.o)
 
-NAME = my_nm
+####### FLAGS ########
 
-NAME_T = unit_tests
+CFLAGS 	=	-std=gnu17 -Wall -Wextra -O2 -Iinclude
 
-CC = gcc
+###### NAME ########
 
-CFLAGS = -std=gnu17 -Wall -Wextra -g -ldl
+NAME 	= 	strace
 
-ASM = nasm
+###### COMPIL ######
 
-ASMFLAGS = -f elf64
+CC		=	gcc
 
-LD = ld
-
-LDFLAGS = -fpic -shared
-
-LSFLAGS = ar rc
-
-LIB = -L./ -lasm
+###### RULES #######
 
 all: $(NAME)
 
-%.o: %.asm
-	$(ASM) $(ASMFLAGS) $<
+$(NAME): $(OBJ_MAIN) $(OBJ_SRC)
+	$(CC) $(CFLAGS) $(OBJ_MAIN) $(OBJ_SRC) -o $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+tests_run: $(NAME)
 
 clean:
-	rm -f $(OBJ)
-	rm -f $(OBJ_T)
+	rm -f $(OBJ_SRC)
+	rm -f $(OBJ_MAIN)
 	rm -f *.gcda
 	rm -f *.gcno
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME_T)
+
+# rule only to use debug tools
+debug: CFLAGS += -g
+debug: $(BINARY_NAME)
 
 re: fclean all
 
-$(NAME_T): fclean all $(OBJ_T)
-	$(CC) $(OBJ_T) -lcriterion --coverage -o $(NAME_T)
-
-tests_run: $(NAME_T)
-	./$(NAME_T)
-	gcovr --exclude tests -b
+# to protect rules
+.PHONY: all clean fclean re debug
