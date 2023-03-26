@@ -25,5 +25,7 @@ int main(int ac, char **av)
         display_help_message(av);
         return (0);
     }
+    if (strace(ac, av) == 84)
+        return (84);
     return (0);
 }
