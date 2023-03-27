@@ -17,5 +17,6 @@
 // Function prototype
     int option_handling(int ac, char **av, bool *s, bool *p);
     int strace(int ac, char **av);
+    char **my_str_to_word_array(char const *str);
 
 #endif /* !STRACE_H_ */

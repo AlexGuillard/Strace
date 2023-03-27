@@ -10,7 +10,8 @@
 MAIN 		=	main.c
 
 SRC			=	source/option_handling.c		\
-				source/strace.c
+				source/strace.c					\
+				source/tools/my_str_to_word_array.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
