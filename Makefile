@@ -49,7 +49,7 @@ fclean: clean
 
 # rule only to use debug tools
 debug: CFLAGS += -g
-debug: $(BINARY_NAME)
+debug: re
 
 re: fclean all
 
