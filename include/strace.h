@@ -21,5 +21,6 @@
     int option_handling(int ac, char **av, bool *s, bool *p);
     int strace(int ac, char **av);
     void handle_core_pid(char **av, bool s);
+    void display_info(syscall_t system_call);
 
 #endif /* !STRACE_H_ */
