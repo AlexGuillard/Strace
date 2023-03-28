@@ -16,6 +16,7 @@
     #include <sys/ptrace.h>
     #include <sys/wait.h>
     #include <sys/user.h>
+    #include "syscall.h"
 
 // Function prototype
     int option_handling(int ac, char **av, bool *s, bool *p);

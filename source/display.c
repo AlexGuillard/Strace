@@ -6,7 +6,6 @@
 */
 
 #include "strace.h"
-#include "../include/syscall.h"
 
 int get_number_arg(syscall_t system_call, int i)
 {

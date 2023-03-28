@@ -6,7 +6,6 @@
 */
 
 #include "strace.h"
-#include "../include/syscall.h"
 
 int detection_pid_pos(char **av)
 {
