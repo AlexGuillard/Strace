@@ -13,9 +13,13 @@
     #include <stdlib.h>
     #include <signal.h>
     #include <unistd.h>
+    #include <sys/ptrace.h>
+    #include <sys/wait.h>
+    #include <sys/user.h>
 
 // Function prototype
     int option_handling(int ac, char **av, bool *s, bool *p);
     int strace(int ac, char **av);
+    void handle_core_pid(char **av, bool s);
 
 #endif /* !STRACE_H_ */
