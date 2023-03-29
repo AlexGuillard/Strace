@@ -46,7 +46,7 @@ static int init_tracing(pid_t *child, int *text, struct user_regs_struct *regs)
     return (0);
 }
 
-static int trace_command(pid_t *child, int *status)
+static int trace_command(pid_t *child, int *status, int *s)
 {
     struct user_regs_struct regs;
     int text = 0;
@@ -63,7 +63,7 @@ static int trace_command(pid_t *child, int *status)
     return (0);
 }
 
-int core_command(char **command)
+int core_command(char **command, int *s)
 {
     pid_t child = 0;
     int status = 0;
@@ -74,7 +74,7 @@ int core_command(char **command)
     if (child == 0) {
         exec_command(command);
     } else {
-        if (trace_command(&child, &status) == 84)
+        if (trace_command(&child, &status, s) == 84)
             return (84);
     }
     return (0);

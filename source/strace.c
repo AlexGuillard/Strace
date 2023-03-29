@@ -19,7 +19,7 @@ int strace(int ac, char **av)
     if (p == true) {
         handle_core_pid(av, s);
     } else {
-        if (core_command(av) == 84)
+        if (core_command(av, &s) == 84)
             return (84);
     }
     return (0);
