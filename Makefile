@@ -10,11 +10,12 @@
 MAIN 		=	main.c
 
 SRC			=	source/option_handling.c		\
-				source/strace.c \
-				source/core_pid.c \
-				source/display.c
-				source/strace.c 				\
-				source/core_command.c
+				source/strace.c 	\
+				source/core_pid.c 	\
+				source/display.c	\
+				source/core_command.c		\
+				source/detect_fonction.c	\
+				source/display_info_hexa.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
