@@ -31,7 +31,7 @@ void handle_core_pid(char **av, bool *s)
             exit(84);
         if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
             exit(84);
-        detect_fonction(&regs, s, pid);
+        detect_fonction(&regs, s, &pid);
         waitpid(pid, &status, 0);
         if (WIFEXITED(status) || WIFSIGNALED(status))
             break;

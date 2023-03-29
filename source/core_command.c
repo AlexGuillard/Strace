@@ -49,7 +49,7 @@ static int trace_command(pid_t *child, int *status, bool *s)
     wait4(*child, status, 0, NULL);
     while (42) {
         init_tracing(child, &regs);
-        detect_fonction(&regs, s, *child);
+        detect_fonction(&regs, s, child);
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
             break;

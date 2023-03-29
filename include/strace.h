@@ -25,9 +25,15 @@
     void handle_core_pid(char **av, bool *s);
     void display_info_hexa(syscall_t *system_call);
     void display_info_string(struct user_regs_struct *regs,
-        syscall_t *system_call, int pid);
+        syscall_t *system_call, int *pid);
     int core_command(char **command, bool *s);
-    void detect_fonction(struct user_regs_struct *regs, bool *s, int pid);
+    void detect_fonction(struct user_regs_struct *regs, bool *s, int *pid);
     void display_info_hexa(syscall_t *system_call);
+    void handle_first_argument(struct user_regs_struct *regs, int *pid);
+    void handle_second_argument(struct user_regs_struct *regs, int *pid);
+    void handle_third_argument(struct user_regs_struct *regs, int *pid);
+    void handle_fourth_argument(struct user_regs_struct *regs, int *pid);
+    void handle_fifth_argument(struct user_regs_struct *regs, int *pid);
+    void handle_sixth_argument(struct user_regs_struct *regs, int *pid);
 
 #endif /* !STRACE_H_ */
