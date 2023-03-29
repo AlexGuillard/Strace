@@ -13,6 +13,8 @@ SRC			=	source/option_handling.c		\
 				source/strace.c \
 				source/core_pid.c \
 				source/display.c
+				source/strace.c 				\
+				source/core_command.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
@@ -50,7 +52,7 @@ fclean: clean
 
 # rule only to use debug tools
 debug: CFLAGS += -g
-debug: $(BINARY_NAME)
+debug: re
 
 re: fclean all
 

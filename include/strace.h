@@ -17,7 +17,8 @@
     #include <sys/wait.h>
     #include <sys/user.h>
     #include "syscall.h"
-    #include <inttypes.h>
+    #include <sys/types.h>
+    #include "syscall.h"
 
 // Function prototype
     int option_handling(int ac, char **av, bool *s, bool *p);
@@ -26,5 +27,7 @@
     void display_info_hexa(syscall_t *system_call);
     void display_info_string(struct user_regs_struct *regs,
         syscall_t *system_call, int pid);
+    int core_command(char **command, int *s);
+    void detect_fonction(struct user_regs_struct regs);
 
 #endif /* !STRACE_H_ */
