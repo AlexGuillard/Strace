@@ -17,11 +17,14 @@
     #include <sys/wait.h>
     #include <sys/user.h>
     #include "syscall.h"
+    #include <inttypes.h>
 
 // Function prototype
     int option_handling(int ac, char **av, bool *s, bool *p);
     int strace(int ac, char **av);
     void handle_core_pid(char **av, bool s);
-    void display_info(syscall_t system_call);
+    void display_info_hexa(syscall_t *system_call);
+    void display_info_string(struct user_regs_struct *regs,
+        syscall_t *system_call, int pid);
 
 #endif /* !STRACE_H_ */
