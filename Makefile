@@ -10,8 +10,9 @@
 MAIN 		=	main.c
 
 SRC			=	source/option_handling.c		\
-				source/strace.c \
-				source/core.c
+				source/strace.c 				\
+				source/core.c					\
+				source/core_command.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
@@ -19,7 +20,7 @@ OBJ_SRC 	=	$(SRC:%.c=%.o)
 
 ####### FLAGS ########
 
-CFLAGS 	=	-std=gnu17 -Wall -Wextra -O2 -Iinclude
+CFLAGS 	=	-std=gnu17 -Wall -Wextra -Iinclude
 
 ###### NAME ########
 
@@ -49,7 +50,7 @@ fclean: clean
 
 # rule only to use debug tools
 debug: CFLAGS += -g
-debug: $(BINARY_NAME)
+debug: re
 
 re: fclean all
 
