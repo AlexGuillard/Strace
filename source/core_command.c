@@ -28,15 +28,10 @@ static void exec_command(char **command)
     exit(0);
 }
 
-static int init_tracing(pid_t *child, int *text, struct user_regs_struct *regs)
+static int init_tracing(pid_t *child, struct user_regs_struct *regs)
 {
     if (ptrace(PTRACE_GETREGS, *child, NULL, regs) == -1) {
         printf("error trace get_regs\n");
-        return (84);
-    }
-    *text = ptrace(PTRACE_PEEKTEXT, *child, regs->rip, NULL);
-    if (*text == -1) {
-        printf("error trace text\n");
         return (84);
     }
     if (ptrace(PTRACE_SINGLESTEP, *child, NULL, 0) == -1) {
@@ -49,11 +44,10 @@ static int init_tracing(pid_t *child, int *text, struct user_regs_struct *regs)
 static int trace_command(pid_t *child, int *status, int *s)
 {
     struct user_regs_struct regs;
-    int text = 0;
 
     wait4(*child, status, 0, NULL);
     while (42) {
-        init_tracing(child, &text, &regs);
+        init_tracing(child, &regs);
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
             printf("[%d -> %d] \n", *child, *status);
