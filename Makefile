@@ -20,7 +20,7 @@ OBJ_SRC 	=	$(SRC:%.c=%.o)
 
 ####### FLAGS ########
 
-CFLAGS 	=	-std=gnu17 -Wall -Wextra -O2 -Iinclude
+CFLAGS 	=	-std=gnu17 -Wall -Wextra -Iinclude
 
 ###### NAME ########
 
