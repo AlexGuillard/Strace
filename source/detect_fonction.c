@@ -7,7 +7,7 @@
 
 #include "strace.h"
 
-void detect_fonction(struct user_regs_struct *regs, bool *s, int pid)
+void detect_fonction(struct user_regs_struct *regs, bool *s, int *pid)
 {
     syscall_t system_call = {regs->orig_rax, "?", 6, regs->rax, regs->rdi,
         regs->rsi, regs->rdx, regs->rcx, regs->r8, regs->r9};
