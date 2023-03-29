@@ -16,7 +16,11 @@ int strace(int ac, char **av)
         printf("%s: Error option\n", av[0]);
         return (84);
     }
-    if (p == true)
+    if (p == true) {
         handle_core_pid(av, s);
+    } else {
+        if (core_command(av) == 84)
+            return (84);
+    }
     return (0);
 }
