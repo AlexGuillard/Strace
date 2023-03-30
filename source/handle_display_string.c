@@ -23,13 +23,11 @@ void loop_display_string(long addr_str, char *str)
 
 void handle_display_string(int *pid, long long int registre)
 {
-    long addr_str;
+    long addr_str = 0;
     char *str;
 
-    addr_str = ptrace(PTRACE_PEEKTEXT, pid, registre, NULL);
-    printf("check");
+    addr_str = ptrace(PTRACE_PEEKTEXT, *pid, registre, NULL);
     while (addr_str != -1) {
-        printf(" [1 check 1] ");
         str = (char *) &addr_str;
         fflush(stdout);
         loop_display_string(addr_str, str);
@@ -37,6 +35,6 @@ void handle_display_string(int *pid, long long int registre)
             break;
         }
         registre += sizeof(addr_str);
-        addr_str = ptrace(PTRACE_PEEKTEXT, pid, registre, NULL);
+        addr_str = ptrace(PTRACE_PEEKTEXT, *pid, registre, NULL);
     }
 }
