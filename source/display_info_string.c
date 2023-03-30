@@ -7,6 +7,22 @@
 
 #include "strace.h"
 
+static void handle_return_args(struct user_regs_struct *regs,
+    syscall_t *system_call)
+{
+    switch (table[system_call->id].rax) {
+    case VOID:
+        printf(") = ?\n");
+        break;
+    case PVOID:
+        printf(") = %p\n", regs->rax);
+        break;
+    default:
+        printf(") = %i\n", system_call->rax);
+        break;
+    }
+}
+
 static void handle_all_args(struct user_regs_struct *regs,
     syscall_t *system_call, int i, int *pid)
 {
@@ -40,5 +56,5 @@ void display_info_string(struct user_regs_struct *regs,
         if (i + 1 < system_call->nb_arg)
             printf(", ");
     }
-    printf(") = %i\n", system_call->rax);
+    handle_return_args(regs, system_call);
 }
