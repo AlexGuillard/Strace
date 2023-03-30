@@ -23,9 +23,9 @@ static void init_trace(int *pid, struct user_regs_struct *regs)
         printf("error trace exit\n");
         exit(84);
     }
-    if (ptrace(PTRACE_GETREGS, pid, NULL, &regs) == -1)
+    if (ptrace(PTRACE_GETREGS, *pid, NULL, regs) == -1)
         exit(84);
-    if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
+    if (ptrace(PTRACE_SINGLESTEP, *pid, NULL, NULL) == -1)
         exit(84);
 }
 
