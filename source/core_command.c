@@ -30,6 +30,10 @@ static void exec_command(char **command)
 
 static int init_tracing(pid_t *child, struct user_regs_struct *regs)
 {
+    if (ptrace(PTRACE_SETOPTIONS, *child, NULL, PTRACE_O_TRACEEXIT) == -1) {
+        printf("error trace exit\n");
+        return (84);
+    }
     if (ptrace(PTRACE_GETREGS, *child, NULL, regs) == -1) {
         printf("error trace get_regs\n");
         return (84);
@@ -52,6 +56,7 @@ static int trace_command(pid_t *child, int *status, bool *s)
         detect_fonction(&regs, s, child);
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
+            printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;
         }
     }
