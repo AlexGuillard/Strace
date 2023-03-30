@@ -35,5 +35,6 @@
     void handle_fourth_argument(struct user_regs_struct *regs, int *pid);
     void handle_fifth_argument(struct user_regs_struct *regs, int *pid);
     void handle_sixth_argument(struct user_regs_struct *regs, int *pid);
+    void handle_display_string(int *pid, long long int registre);
 
 #endif /* !STRACE_H_ */
