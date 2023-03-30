@@ -41,23 +41,24 @@ static int init_tracing(pid_t *child, struct user_regs_struct *regs)
     return (0);
 }
 
-static int trace_command(pid_t *child, int *status, int *s)
+static int trace_command(pid_t *child, int *status, bool *s)
 {
     struct user_regs_struct regs;
+    (void)*s;
 
     wait4(*child, status, 0, NULL);
     while (42) {
         init_tracing(child, &regs);
+        detect_fonction(&regs, s, child);
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
-            printf("[%d -> %d] \n", *child, *status);
             break;
         }
     }
     return (0);
 }
 
-int core_command(char **command, int *s)
+int core_command(char **command, bool *s)
 {
     pid_t child = 0;
     int status = 0;
