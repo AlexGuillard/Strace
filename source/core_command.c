@@ -38,10 +38,6 @@ static int init_tracing(pid_t *child, struct user_regs_struct *regs)
         printf("error trace get_regs\n");
         return (84);
     }
-    if (ptrace(PTRACE_SINGLESTEP, *child, NULL, 0) == -1) {
-        printf("error trace single step\n");
-        return (84);
-    }
     return (0);
 }
 
@@ -54,6 +50,10 @@ static int trace_command(pid_t *child, int *status, bool *s)
     while (42) {
         init_tracing(child, &regs);
         detect_fonction(&regs, s, child);
+        if (ptrace(PTRACE_SINGLESTEP, *child, NULL, 0) == -1) {
+            printf("error trace single step\n");
+            return (84);
+        }
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
