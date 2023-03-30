@@ -33,7 +33,7 @@ void display_info_hexa(syscall_t *system_call)
         return;
     printf("%s(", system_call->name);
     for (int i = 0; i < system_call->nb_arg; i++) {
-        if (system_call->nb_arg > 1)
+        if (system_call->nb_arg >= 1)
             printf("%#x", get_number_arg(system_call, i));
         if (i + 1 < system_call->nb_arg)
             printf(", ");
