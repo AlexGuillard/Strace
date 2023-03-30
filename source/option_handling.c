@@ -50,6 +50,8 @@ int option_handling(int ac, char **av, bool *s, bool *p)
     int option_nb = 1;
 
     options_finder(av, s, p, &option_nb);
+    if (*p == false)
+        return (0);
     if ((ac - 1) != option_nb)
         return (84);
     if (*p == true) {

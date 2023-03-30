@@ -35,5 +35,7 @@
     void handle_fourth_argument(struct user_regs_struct *regs, int *pid);
     void handle_fifth_argument(struct user_regs_struct *regs, int *pid);
     void handle_sixth_argument(struct user_regs_struct *regs, int *pid);
+    char *my_strcat(char *first, char *second);
+    char **my_str_to_word_array(char const *str);
 
 #endif /* !STRACE_H_ */
