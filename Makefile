@@ -17,7 +17,8 @@ SRC			=	source/option_handling.c		\
 				source/detect_fonction.c	\
 				source/display_info_hexa.c	\
 				source/handle_first_args.c 	\
-				source/handle_last_args.c
+				source/handle_last_args.c	\
+				source/handle_display_string.c
 
 OBJ_MAIN 	=	$(MAIN:%.c=%.o)
 
