@@ -21,7 +21,7 @@ static void exec_command(char **command)
         printf("error tracing\n");
         exit(84);
     }
-    if (execvp(command[1], command) == -1) {
+    if (execvp(command[0], command) == -1) {
         printf("error execution\n");
         exit(84);
     }

@@ -7,27 +7,30 @@
 
 #include "strace.h"
 
-void handle_first_argument(struct user_regs_struct *regs, int *pid)
+void handle_first_argument(struct user_regs_struct *regs,
+    syscall_t *system_call, int *pid)
 {
-    if (table[regs->orig_rax].rdi == STRING)
+    if (table[system_call->id].rdi == STRING) {
         handle_display_string(pid, regs->rdi);
-    else
+    } else
         printf("%lli", regs->rdi);
     return;
 }
 
-void handle_second_argument(struct user_regs_struct *regs, int *pid)
+void handle_second_argument(struct user_regs_struct *regs,
+    syscall_t *system_call, int *pid)
 {
-    if (table[regs->orig_rax].rsi == STRING)
+    if (table[system_call->id].rsi == STRING) {
         handle_display_string(pid, regs->rsi);
-    else
+    } else
         printf("%lli", regs->rsi);
     return;
 }
 
-void handle_third_argument(struct user_regs_struct *regs, int *pid)
+void handle_third_argument(struct user_regs_struct *regs,
+    syscall_t *system_call, int *pid)
 {
-    if (table[regs->orig_rax].rdx == STRING)
+    if (table[system_call->id].rdx == STRING)
         handle_display_string(pid, regs->rdx);
     else
         printf("%lli", regs->rdx);

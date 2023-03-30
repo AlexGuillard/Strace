@@ -12,17 +12,17 @@ static void handle_all_args(struct user_regs_struct *regs,
 {
     switch (i) {
     case 0:
-        return handle_first_argument(regs, pid);
+        return handle_first_argument(regs, system_call, pid);
     case 1:
-        return handle_second_argument(regs, pid);
+        return handle_second_argument(regs, system_call, pid);
     case 2:
-        return handle_third_argument(regs, pid);
+        return handle_third_argument(regs, system_call, pid);
     case 3:
-        return handle_fourth_argument(regs, pid);
+        return handle_fourth_argument(regs, system_call, pid);
     case 4:
-        return handle_fifth_argument(regs, pid);
+        return handle_fifth_argument(regs, system_call, pid);
     case 5:
-        return handle_sixth_argument(regs, pid);
+        return handle_sixth_argument(regs, system_call, pid);
     default:
         return;
     }

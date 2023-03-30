@@ -27,7 +27,9 @@ void handle_display_string(int *pid, long long int registre)
     char *str;
 
     addr_str = ptrace(PTRACE_PEEKTEXT, pid, registre, NULL);
+    printf("check");
     while (addr_str != -1) {
+        printf(" [1 check 1] ");
         str = (char *) &addr_str;
         fflush(stdout);
         loop_display_string(addr_str, str);
