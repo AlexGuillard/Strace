@@ -56,6 +56,7 @@ static int trace_command(pid_t *child, int *status, bool *s)
         detect_fonction(&regs, s, child);
         wait4(*child, status, 0, NULL);
         if (WIFSIGNALED(*status) || WIFEXITED(*status)) {
+            printf("+++ exited with %d +++\n", WEXITSTATUS(*status));
             break;
         }
     }
