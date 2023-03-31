@@ -23,9 +23,7 @@ static void init_trace(int *pid, struct user_regs_struct *regs)
         printf("error trace exit\n");
         exit(84);
     }
-    if (ptrace(PTRACE_GETREGS, pid, NULL, &regs) == -1)
-        exit(84);
-    if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
+    if (ptrace(PTRACE_GETREGS, *pid, NULL, regs) == -1)
         exit(84);
 }
 
@@ -41,6 +39,8 @@ void handle_core_pid(char **av, bool *s)
     while (true) {
         init_trace(&pid, &regs);
         detect_fonction(&regs, s, &pid);
+        if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
+            exit(84);
         waitpid(pid, &status, 0);
         if (WIFEXITED(status) || WIFSIGNALED(status)) {
             printf("+++ exited with %d +++\n", WEXITSTATUS(status));

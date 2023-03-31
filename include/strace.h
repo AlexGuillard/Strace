@@ -29,13 +29,20 @@
     int core_command(char **command, bool *s);
     void detect_fonction(struct user_regs_struct *regs, bool *s, int *pid);
     void display_info_hexa(syscall_t *system_call);
-    void handle_first_argument(struct user_regs_struct *regs, int *pid);
-    void handle_second_argument(struct user_regs_struct *regs, int *pid);
-    void handle_third_argument(struct user_regs_struct *regs, int *pid);
-    void handle_fourth_argument(struct user_regs_struct *regs, int *pid);
-    void handle_fifth_argument(struct user_regs_struct *regs, int *pid);
-    void handle_sixth_argument(struct user_regs_struct *regs, int *pid);
+    void handle_first_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
+    void handle_second_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
+    void handle_third_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
+    void handle_fourth_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
+    void handle_fifth_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
+    void handle_sixth_argument(struct user_regs_struct *regs,
+        syscall_t *system_call, int *pid);
     char *my_strcat(char *first, char *second);
     char **my_str_to_word_array(char const *str);
+    void handle_display_string(int *pid, long long int registre);
 
 #endif /* !STRACE_H_ */

@@ -5,8 +5,7 @@
 ** my_strcat but spécific for this projet
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "strace.h"
 
 char *my_strcat(char *first, char *second)
 {

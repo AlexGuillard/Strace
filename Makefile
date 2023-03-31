@@ -18,6 +18,7 @@ SRC			=	source/option_handling.c		\
 				source/display_info_hexa.c	\
 				source/handle_first_args.c 	\
 				source/handle_last_args.c	\
+				source/handle_display_string.c \
 				source/Utils/my_strcat.c	\
 				source/Utils/my_str_to_word_array.c
 
