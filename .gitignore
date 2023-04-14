@@ -11,3 +11,5 @@ temp/
 flags.h
 temp*
 coding-style*
+vgcore*
+
